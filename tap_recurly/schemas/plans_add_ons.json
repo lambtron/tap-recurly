@@ -1,0 +1,115 @@
+{
+  "type": [
+    "null",
+    "object"
+  ],
+  "properties": {
+    "id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "object": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "plan_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "state": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "name": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "accounting_code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "tax_code": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "display_quantity": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "default_quantity": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "currencies": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {
+          "currency": {
+            "type": [
+              "null",
+              "str"
+            ]
+          },
+          "unit_amount": {
+            "type": [
+              "null",
+              "number"
+            ]
+          }
+        }
+      }
+    },
+    "created_at": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    },
+    "deleted_at": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    }
+  }
+}
