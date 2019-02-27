@@ -12,6 +12,7 @@ from tap_recurly.recurly import Recurly
 from tap_recurly.discover import discover_streams
 from tap_recurly.sync import sync_stream
 from tap_recurly.streams import STREAMS
+from tap_recurly.context import Context
 
 
 logger = singer.get_logger()
@@ -26,7 +27,7 @@ REQUIRED_CONFIG_KEYS = [
 ]
 
 
-def do_discover(client):
+def discover(client):
     logger.info("Starting discover")
     catalog = {"streams": discover_streams(client)}
     json.dump(catalog, sys.stdout, indent=2)
@@ -46,7 +47,7 @@ def get_selected_streams(catalog):
     return selected_stream_names
 
 
-def do_sync(client, catalog, state):
+def sync(client, catalog, state):
     selected_stream_names = get_selected_streams(catalog)
 
     for stream in catalog.streams:
@@ -54,9 +55,9 @@ def do_sync(client, catalog, state):
 
         mdata = metadata.to_map(stream.metadata)
 
-        if stream_name not in selected_stream_names:
-            logger.info("%s: Skipping - not selected", stream_name)
-            continue
+        # if stream_name not in selected_stream_names:
+        #     logger.info("%s: Skipping - not selected", stream_name)
+        #     continue
 
         key_properties = metadata.get(mdata, (), 'table-key-properties')
         singer.write_schema(stream_name, stream.schema.to_dict(), key_properties)
@@ -83,12 +84,13 @@ def main():
         "quota_limit": parsed_args.config['quota_limit']
     }
     client = Recurly(**creds)
+    Context.config = parsed_args.config
 
     if parsed_args.discover:
-        do_discover(client)
+        discover(client)
     elif parsed_args.catalog:
         state = parsed_args.state or {}
-        do_sync(client, parsed_args.catalog, state)
+        sync(client, parsed_args.catalog, state)
 
 
 

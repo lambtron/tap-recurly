@@ -12,6 +12,7 @@ from singer import metadata
 from singer import utils
 from singer.metrics import Point
 from dateutil.parser import parse
+from tap_recurly.context import Context
 
 
 logger = singer.get_logger()
@@ -57,7 +58,7 @@ class Stream():
 
 
     def get_bookmark(self, state):
-        return singer.get_bookmark(state, self.name, self.replication_key)
+        return (singer.get_bookmark(state, self.name, self.replication_key)) or Context.config["start_date"]
 
 
     def update_bookmark_if_old(self, state, value):

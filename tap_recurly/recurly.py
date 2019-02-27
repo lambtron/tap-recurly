@@ -30,7 +30,8 @@ class Recurly(object):
 
 
   def sleep_until(self, timestamp=None):
-    difference_in_seconds = timestamp - int(time.time())
+    difference_in_seconds = int(timestamp) - time.time()
+    logger.info("Sleeping {seconds} seconds until {timestamp}".format(seconds=difference_in_seconds, timestamp=timestamp))
     time.sleep(difference_in_seconds)
 
 
@@ -47,7 +48,6 @@ class Recurly(object):
     response = requests.get(uri, headers=self.headers)
     response.raise_for_status()
     self.check_rate_limit(response.headers.get('X-RateLimit-Remaining'), response.headers.get('X-RateLimit-Reset'))
-    print(response.json())
     return response.json()
 
 
@@ -66,52 +66,67 @@ class Recurly(object):
   # 
 
   def accounts(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/accounts?limit={limit}&sort={column_name}".format(site_id=self.site_id, limit=self.limit, column_name=column_name))
+    return self._get_all("sites/{site_id}/accounts?limit={limit}&sort={column_name}&begin_time={bookmark}".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
 
 
   # substream of accounts
   def billing_info(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}".format(site_id=self.site_id, account_id=account_id, limit=self.limit, column_name=column_name))
+    accounts = self.accounts("updated_at", bookmark)
+    for account in accounts:
+      for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&begin_time={bookmark}".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name, bookmark=bookmark)):
+        yield item
 
   
   # substream of accounts
   def adjustments(self, column_name=None, bookmark=None):
-    return #
+    return
+    # accounts = self.accounts("updated_at")
+    # for account in accounts:
+    #   for adjustments in self._get_all("sites/{site_id}/accounts/{account_id}/")
 
 
   # substream of accounts
   def accounts_coupon_redemptions(self, column_name=None, bookmark=None):
-    return # self._get_all("/sites/{site_id}/accounts/{account_id}/coupon_redemptions?limit={limit}&sort={column_name}".format(site_id=self.site_id, account_id=account_id, limit=self.limit, column_name=column_name))
+    accounts = self.accounts("updated_at", bookmark)
+    for account in accounts:
+      for item in self._get_all("sites/{site_id}/accounts/{account_id}/coupon_redemptions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name, bookmark=bookmark)):
+        yield item
 
 
   def coupons(self, column_name=None, bookmark=None):
-    return self._get_all("/sites/{site_id}/coupons?limit={limit}&sort={column_name}".format(site_id=self.site_id, limit=self.limit, column_name=column_name))
+    return self._get_all("sites/{site_id}/coupons?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
 
 
   def invoices(self, column_name=None, bookmark=None):
-    return self._get_all("/sites/{site_id}/invoices?limit={limit}&sort={column_name}".format(site_id=self.site_id, limit=self.limit, column_name=column_name))
+    return self._get_all("sites/{site_id}/invoices?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
 
 
   # substream of invoices
   def invoices_coupon_redemptions(self, column_name=None, bookmark=None):
-    return #
+    invoices = self.invoices('updated_at', bookmark)
+    for invoice in invoices:
+      for item in self._get_all("sites/{site_id}/invoices/{invoice_id}/coupon_redemptions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, invoice_id=invoice["id"], limit=self.limit, column_name=column_name, bookmark=bookmark)):
+        yield item
 
 
   def plans(self, column_name=None, bookmark=None):
-    return self._get_all("/sites/{site_id}/plans?limit={limit}&sort={column_name}".format(site_id=self.site_id, limit=self.limit, column_name=column_name))
+    return self._get_all("sites/{site_id}/plans?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
 
 
   # substream of plans
   def plans_add_ons(self, column_name=None, bookmark=None):
-    return #
+    plans = self.plans('updated_at', bookmark)
+    for plan in plans:
+      for item in self._get_all("sites/{site_id}/plans/{plan_id}/add_ons?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, plan_id=plan["id"], limit=self.limit, column_name=column_name, bookmark=bookmark)):
+        yield item
 
 
-  def subscrptions(self, column_name=None, bookmark=None):
-    return self._get_all("/sites/{site_id}/subscriptions?limit={limit}&sort={column_name}".format(site_id=self.site_id, limit=self.limit, column_name=column_name))
+  def subscriptions(self, column_name=None, bookmark=None):
+    return self._get_all("sites/{site_id}/subscriptions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
 
 
   def transactions(self, column_name=None, bookmark=None):
-    return self._get_all("/sites/{site_id}/transactions?limit={limit}&sort={column_name}".format(site_id=self.site_id, limit=self.limit, column_name=column_name))
+    return self._get_all("sites/{site_id}/transactions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
 
 
 
