@@ -4,6 +4,7 @@
 #
 
 from datetime import datetime, timedelta
+from requests.auth import HTTPBasicAuth
 from singer import utils
 import backoff
 import requests
@@ -26,7 +27,8 @@ class Recurly(object):
     self.limit = 200
     self.total_rate_limit = 6000
     self.quota_rate_limit = int(quota_limit * self.total_rate_limit / 100)
-    self.uri = "https://{api_key}:@partner-api.recurly.com/".format(api_key=api_key)
+    self.api_key = api_key
+    self.uri = "https://partner-api.recurly.com/".format(api_key=api_key)
 
 
   def sleep_until(self, timestamp=None):
@@ -45,7 +47,7 @@ class Recurly(object):
   def _get(self, path, **kwargs):
     uri = "{uri}{path}".format(uri=self.uri, path=path)
     logger.info("GET request to {uri}".format(uri=uri))
-    response = requests.get(uri, headers=self.headers)
+    response = requests.get(uri, headers=self.headers, auth=HTTPBasicAuth(self.api_key, ''))
     response.raise_for_status()
     self.check_rate_limit(response.headers.get('X-RateLimit-Remaining'), response.headers.get('X-RateLimit-Reset'))
     return response.json()
@@ -66,30 +68,26 @@ class Recurly(object):
   # 
 
   def accounts(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/accounts?limit={limit}&sort={column_name}&begin_time={bookmark}".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
+    return self._get_all("sites/{site_id}/accounts?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
 
 
   # substream of accounts
   def billing_info(self, column_name=None, bookmark=None):
-    accounts = self.accounts("updated_at", bookmark)
+    accounts = self.accounts(column_name, bookmark)
     for account in accounts:
-      for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&begin_time={bookmark}".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name, bookmark=bookmark)):
+      for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
         yield item
 
   
-  # substream of accounts
   def adjustments(self, column_name=None, bookmark=None):
-    return
-    # accounts = self.accounts("updated_at")
-    # for account in accounts:
-    #   for adjustments in self._get_all("sites/{site_id}/accounts/{account_id}/")
+    return self._get_all("sites/{site_id}/line_items?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
 
 
   # substream of accounts
   def accounts_coupon_redemptions(self, column_name=None, bookmark=None):
-    accounts = self.accounts("updated_at", bookmark)
+    accounts = self.accounts(column_name, bookmark)
     for account in accounts:
-      for item in self._get_all("sites/{site_id}/accounts/{account_id}/coupon_redemptions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name, bookmark=bookmark)):
+      for item in self._get_all("sites/{site_id}/accounts/{account_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
         yield item
 
 
@@ -103,9 +101,9 @@ class Recurly(object):
 
   # substream of invoices
   def invoices_coupon_redemptions(self, column_name=None, bookmark=None):
-    invoices = self.invoices('updated_at', bookmark)
+    invoices = self.invoices(column_name, bookmark)
     for invoice in invoices:
-      for item in self._get_all("sites/{site_id}/invoices/{invoice_id}/coupon_redemptions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, invoice_id=invoice["id"], limit=self.limit, column_name=column_name, bookmark=bookmark)):
+      for item in self._get_all("sites/{site_id}/invoices/{invoice_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, invoice_id=invoice["id"], limit=self.limit, column_name=column_name)):
         yield item
 
 
@@ -115,9 +113,9 @@ class Recurly(object):
 
   # substream of plans
   def plans_add_ons(self, column_name=None, bookmark=None):
-    plans = self.plans('updated_at', bookmark)
+    plans = self.plans(column_name, bookmark)
     for plan in plans:
-      for item in self._get_all("sites/{site_id}/plans/{plan_id}/add_ons?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, plan_id=plan["id"], limit=self.limit, column_name=column_name, bookmark=bookmark)):
+      for item in self._get_all("sites/{site_id}/plans/{plan_id}/add_ons?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, plan_id=plan["id"], limit=self.limit, column_name=column_name)):
         yield item
 
 

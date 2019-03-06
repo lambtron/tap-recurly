@@ -22,14 +22,15 @@ $ pip3 install -e .
 
 ### Create config file
 
-This config is to authenticate into toggl. You can request an API token in your settings on the Toggl website.
-
-The `detailed_report_trailing_days` determines the window of how many trailing days to pull the `time_entries` resource.
+This config is to authenticate into Recurly. The `quota_limit` is the percentage of the rate limit dedicated to the tap.
 
 ```
 {
-  "api_token": "*****",
-  "detailed_report_trailing_days": 1
+  "start_date" : "2017-01-01T00:00:00Z",
+  "user_agent" : "stitch(+support@stitchdata.com)",
+  "subdomain": "lambtron",
+  "api_key": "99xxxx",
+  "quota_limit": 50
 }
 ```
 
@@ -102,27 +103,20 @@ Messages are written to standard output following the Singer specification. The 
 
 ### Incremental
 
-The streams that are incremental are:
-
-- workspaces
-- clients
-- groups
-- projects
-- tasks
-- users
-- workspace_users
-- time entries*
-
-Time entries uses a lookback window set by the config's "detailed_report_trailing_days" to pull data, then uses replication key `updated` as the bookmark.
+- Accounts
+- Accounts Coupon Redemptions
+- Adjustments
+- Billing Info
+- Coupons
+- Invoices
+- Invoices Coupon Redemptions
+- Plans
+- Plans Add Ons
+- Subscriptions
+- Transactions
 
 ### Full Table
 
-The only stream that is full table is `tags`.
+None.
 
-## Tests
-
-```
-$ make test
-```
-
-Copyright &copy; 2018 Stitch
+Copyright &copy; 2019 Stitch

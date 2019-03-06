@@ -46,32 +46,17 @@ class Stream():
         self.client = client
 
 
-    def is_session_bookmark_old(self, value):
-        if self.session_bookmark is None:
-            return True
-        return utils.strptime_with_tz(value) > utils.strptime_with_tz(self.session_bookmark)
-
-
-    def update_session_bookmark_if_old(self, value):
-        if self.is_session_bookmark_old(value):
-            self.session_bookmark = value
-
-
     def get_bookmark(self, state):
         return (singer.get_bookmark(state, self.name, self.replication_key)) or Context.config["start_date"]
 
 
-    def update_bookmark_if_old(self, state, value):
+    def update_bookmark(self, state, value):
         if self.is_bookmark_old(state, value):
             singer.write_bookmark(state, self.name, self.replication_key, value)
 
 
     def is_bookmark_old(self, state, value):
         current_bookmark = self.get_bookmark(state)
-        if current_bookmark is None:
-            return True
-        if value is None:
-            return False
         return utils.strptime_with_tz(value) > utils.strptime_with_tz(current_bookmark)
 
 
@@ -114,11 +99,8 @@ class Stream():
         if self.replication_method == "INCREMENTAL":
             for item in res:
                 try:
-                    if self.is_bookmark_old(state, item[self.replication_key]):
-                        # must update bookmark when the entire stream is consumed.
-                        # instead, we use a temporary `session_bookmark`.
-                        self.update_session_bookmark_if_old(item[self.replication_key])
-                        yield (self.stream, item)
+                    self.update_bookmark(state, item[self.replication_key])
+                    yield (self.stream, item)
 
                 except Exception as e:
                     logger.error('Handled exception: {error}'.format(error=str(e)))
@@ -130,9 +112,6 @@ class Stream():
 
         else:
             raise Exception('Replication key not defined for {stream}'.format(self.name))
-
-        # After the sync, then set the bookmark based off session_bookmark.
-        self.update_bookmark_if_old(state, self.session_bookmark)
         
 
 class Accounts(Stream):
