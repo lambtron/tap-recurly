@@ -452,67 +452,6 @@
     "due_at":"2019-02-25T22:25:47Z",
     "closed_at":"2019-02-25T22:25:47Z"
   },
-  "accounts_coupon_redemptions": {
-    "id":"string",
-    "object":"string",
-    "account_id":"string",
-    "coupon":{
-      "id":"string",
-      "object":"string",
-      "code":"string",
-      "name":"string",
-      "state":"redeemable",
-      "max_redemptions":0,
-      "max_redemptions_per_account":0,
-      "unique_coupon_codes_count":0,
-      "duration":"forever",
-      "temporal_amount":0,
-      "temporal_unit":"day",
-      "free_trial_unit":"day",
-      "free_trial_amount":1,
-      "applies_to_all_plans":true,
-      "applies_to_non_plan_charges":false,
-      "plans_names":[
-        "string"
-      ],
-      "plans":[
-        {
-          "id":"string",
-          "object":"string",
-          "code":"string",
-          "name":"string"
-        }
-      ],
-      "redemption_resource":"account",
-      "discount":{
-        "type":"percent",
-        "percent":0,
-        "currencies":[
-          {
-            "currency":"str",
-            "amount":0
-          }
-        ],
-        "trial":{
-          "unit":"day",
-          "length":1
-        }
-      },
-      "coupon_type":"single_code",
-      "hosted_page_description":"string",
-      "invoice_description":"string",
-      "redeem_by":"2019-02-25T22:29:30Z",
-      "created_at":"2019-02-25T22:29:30Z",
-      "updated_at":"2019-02-25T22:29:30Z",
-      "expired_at":"2019-02-25T22:29:30Z"
-    },
-    "state":"active",
-    "currency":"str",
-    "discounted":"string",
-    "created_at":"2019-02-25T22:29:30Z",
-    "updated_at":"2019-02-25T22:29:30Z",
-    "removed_at":"2019-02-25T22:29:30Z"
-  },
   "coupons": {
     "id":"string",
     "object":"string",
@@ -885,7 +824,7 @@
     "due_at": "2019-02-25T22:30:15Z",
     "closed_at": "2019-02-25T22:30:15Z"
   },
-  "invoices_coupon_redemptions": {
+  "coupon_redemptions": {
     "id": "string",
     "object": "string",
     "account_id": "string",

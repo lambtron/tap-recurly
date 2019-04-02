@@ -6,6 +6,7 @@
 from datetime import datetime, timedelta
 from requests.auth import HTTPBasicAuth
 from singer import utils
+from urllib import parse
 import backoff
 import requests
 import logging
@@ -26,7 +27,7 @@ class Recurly(object):
     self.start_date = start_date
     self.limit = 200
     self.total_rate_limit = 6000
-    self.quota_rate_limit = int(quota_limit * self.total_rate_limit / 100)
+    self.quota_rate_limit = int(quota_limit) * self.total_rate_limit / 100
     self.api_key = api_key
     self.uri = "https://partner-api.recurly.com/".format(api_key=api_key)
 
@@ -47,6 +48,7 @@ class Recurly(object):
   def _get(self, path, **kwargs):
     uri = "{uri}{path}".format(uri=self.uri, path=path)
     logger.info("GET request to {uri}".format(uri=uri))
+
     response = requests.get(uri, headers=self.headers, auth=HTTPBasicAuth(self.api_key, ''))
     response.raise_for_status()
     self.check_rate_limit(response.headers.get('X-RateLimit-Remaining'), response.headers.get('X-RateLimit-Reset'))
@@ -68,7 +70,7 @@ class Recurly(object):
   # 
 
   def accounts(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/accounts?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
+    return self._get_all("sites/{site_id}/accounts?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
 
   # substream of accounts
@@ -80,35 +82,35 @@ class Recurly(object):
 
   
   def adjustments(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/line_items?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
+    return self._get_all("sites/{site_id}/line_items?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
 
-  # substream of accounts
-  def accounts_coupon_redemptions(self, column_name=None, bookmark=None):
+  # merge coupon redemptions from accounts, invoices, and subscriptions.
+  def coupon_redemptions(self, column_name=None, bookmark=None):
     accounts = self.accounts(column_name, bookmark)
     for account in accounts:
       for item in self._get_all("sites/{site_id}/accounts/{account_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
         yield item
-
-
-  def coupons(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/coupons?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
-
-
-  def invoices(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/invoices?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
-
-
-  # substream of invoices
-  def invoices_coupon_redemptions(self, column_name=None, bookmark=None):
     invoices = self.invoices(column_name, bookmark)
     for invoice in invoices:
       for item in self._get_all("sites/{site_id}/invoices/{invoice_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, invoice_id=invoice["id"], limit=self.limit, column_name=column_name)):
         yield item
+    subscriptions = self.subscriptions(column_name, bookmark)
+    for subscription in subscriptions:
+      for item in self._get_all("sites/{site_id}/subscriptions/{subscription_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, subscription_id=subscription["id"], limit=self.limit, column_name=column_name)):
+        yield item
+
+
+  def coupons(self, column_name=None, bookmark=None):
+    return self._get_all("sites/{site_id}/coupons?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
+
+
+  def invoices(self, column_name=None, bookmark=None):
+    return self._get_all("sites/{site_id}/invoices?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
 
   def plans(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/plans?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
+    return self._get_all("sites/{site_id}/plans?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
 
   # substream of plans
@@ -120,11 +122,11 @@ class Recurly(object):
 
 
   def subscriptions(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/subscriptions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
+    return self._get_all("sites/{site_id}/subscriptions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
 
   def transactions(self, column_name=None, bookmark=None):
-    return self._get_all("sites/{site_id}/transactions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=bookmark))
+    return self._get_all("sites/{site_id}/transactions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
 
 

@@ -98,13 +98,8 @@ class Stream():
 
         if self.replication_method == "INCREMENTAL":
             for item in res:
-                try:
-                    self.update_bookmark(state, item[self.replication_key])
-                    yield (self.stream, item)
-
-                except Exception as e:
-                    logger.error('Handled exception: {error}'.format(error=str(e)))
-                    pass
+                self.update_bookmark(state, item[self.replication_key])
+                yield (self.stream, item)
 
         elif self.replication_method == "FULL_TABLE":
             for item in res:
@@ -118,7 +113,7 @@ class Accounts(Stream):
     name = "accounts"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "account_code" ]
+    key_properties = [ "id" ]
 
 
 class BillingInfo(Stream):
@@ -132,14 +127,14 @@ class Adjustments(Stream):
     name = "adjustments"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "uuid" ]
+    key_properties = [ "id" ]
 
 
-class AccountsCouponRedemptions(Stream):
-    name = "accounts_coupon_redemptions"
+class CouponRedemptions(Stream):
+    name = "coupon_redemptions"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "uuid" ]
+    key_properties = [ "id" ]
 
 
 class Coupons(Stream):
@@ -153,42 +148,35 @@ class Invoices(Stream):
     name = "invoices"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "uuid" ]
-
-
-class InvoicesCouponRedemptions(Stream):
-    name = "invoices_coupon_redemptions"
-    replication_method = "INCREMENTAL"
-    replication_key = "updated_at"
-    key_properties = [ "uuid" ]
+    key_properties = [ "id" ]
 
 
 class Plans(Stream):
     name = "plans"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "plan_code" ]
+    key_properties = [ "id" ]
 
 
 class PlansAddOns(Stream):
     name = "plans_add_ons"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "add_on_code" ]
+    key_properties = [ "id" ]
 
 
 class Subscriptions(Stream):
     name = "subscriptions"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "uuid" ]
+    key_properties = [ "id" ]
 
 
 class Transactions(Stream):
     name = "transactions"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "uuid" ]
+    key_properties = [ "id" ]
 
 
 
@@ -196,10 +184,9 @@ STREAMS = {
     "accounts": Accounts,
     "billing_info": BillingInfo,
     "adjustments": Adjustments,
-    "accounts_coupon_redemptions": AccountsCouponRedemptions,
+    "coupon_redemptions": CouponRedemptions,
     "coupons": Coupons,
     "invoices": Invoices,
-    "invoices_coupon_redemptions": InvoicesCouponRedemptions,
     "plans": Plans,
     "plans_add_ons": PlansAddOns,
     "subscriptions": Subscriptions,
