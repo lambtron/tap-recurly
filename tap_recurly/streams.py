@@ -46,17 +46,19 @@ class Stream():
         self.client = client
 
 
-    def get_bookmark(self, state):
-        return (singer.get_bookmark(state, self.name, self.replication_key)) or Context.config["start_date"]
+    def get_bookmark(self, state, name=None):
+        name = self.name if not name else name
+        return (singer.get_bookmark(state, name, self.replication_key)) or Context.config["start_date"]
 
 
-    def update_bookmark(self, state, value):
-        if self.is_bookmark_old(state, value):
-            singer.write_bookmark(state, self.name, self.replication_key, value)
+    def update_bookmark(self, state, value, name=None):
+        name = self.name if not name else name
+        if self.is_bookmark_old(state, value, name):
+            singer.write_bookmark(state, name, self.replication_key, value)
 
 
-    def is_bookmark_old(self, state, value):
-        current_bookmark = self.get_bookmark(state)
+    def is_bookmark_old(self, state, value, name):
+        current_bookmark = self.get_bookmark(state, name)
         return utils.strptime_with_tz(value) > utils.strptime_with_tz(current_bookmark)
 
 
@@ -94,6 +96,7 @@ class Stream():
     def sync(self, state):
         get_data = getattr(self.client, self.name)
         bookmark = self.get_bookmark(state)
+
         res = get_data(self.replication_key, bookmark)
 
         if self.replication_method == "INCREMENTAL":
@@ -135,6 +138,18 @@ class CouponRedemptions(Stream):
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
     key_properties = [ "id" ]
+    parent_streams = [ "accounts", "subscriptions", "invoices" ]
+
+    # It has it's own sync since it uses multiplpe parent streams.
+    def sync(self, state):
+        bookmark = {}
+        for stream in self.parent_streams:
+            name = "{stream}_{name}".format(stream=stream, name=self.name)
+            get_data = getattr(self.client, name)
+            res = get_data(self.replication_key, self.get_bookmark(state, name))
+            for item in res:
+                self.update_bookmark(state, item[self.replication_key], name)
+                yield (self.stream, item)
 
 
 class Coupons(Stream):

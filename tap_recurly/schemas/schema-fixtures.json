@@ -113,7 +113,7 @@
     "valid":true,
     "payment_method":{
       "object":"string",
-      "card_type":"American Express",
+      "card_type":"string",
       "first_six":"string",
       "last_four":"string",
       "exp_month":0,
@@ -847,14 +847,7 @@
       "plans_names": [
         "string"
       ],
-      "plans": [
-        {
-          "id": "string",
-          "object": "string",
-          "code": "string",
-          "name": "string"
-        }
-      ],
+      "plans": "string",
       "redemption_resource": "account",
       "discount": {
         "type": "percent",
