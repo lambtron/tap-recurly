@@ -313,7 +313,7 @@
                         "currency": {
                           "type": [
                             "null",
-                            "str"
+                            "string"
                           ]
                         },
                         "amount": {
@@ -673,7 +673,7 @@
     "currency": {
       "type": [
         "null",
-        "str"
+        "string"
       ]
     },
     "unit_amount": {

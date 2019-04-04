@@ -78,7 +78,7 @@
           "currency": {
             "type": [
               "null",
-              "str"
+              "string"
             ]
           },
           "unit_amount": {

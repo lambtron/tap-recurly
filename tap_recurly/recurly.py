@@ -11,10 +11,23 @@ import backoff
 import requests
 import logging
 import time
-import sys
 
 
 logger = logging.getLogger()
+MAX_RETRIES = 1
+
+
+def error_handler(details):
+  logger.info("Received error -- Retry %s/%s", details['tries'], MAX_RETRIES)
+
+
+def is_not_status_code_fn(status_code):
+    def gen_fn(exc):
+        if getattr(exc, 'code', None) and exc.code not in status_code:
+            return True
+        # Retry other errors up to the max
+        return False
+    return gen_fn
 
 
 """ Simple wrapper for Recurly. """
@@ -29,7 +42,7 @@ class Recurly(object):
     self.total_rate_limit = 6000
     self.quota_rate_limit = int(quota_limit) * self.total_rate_limit / 100
     self.api_key = api_key
-    self.uri = "https://partner-api.recurly.com/".format(api_key=api_key)
+    self.uri = "https://partner-api.recurly.com/"
 
 
   def sleep_until(self, timestamp=None):
@@ -44,7 +57,9 @@ class Recurly(object):
 
 
   @backoff.on_exception(backoff.expo,
-                        requests.exceptions.RequestException)
+                        requests.exceptions.RequestException,
+                        on_backoff=error_handler,
+                        max_tries=MAX_RETRIES)
   def _get(self, path, **kwargs):
     uri = "{uri}{path}".format(uri=self.uri, path=path)
     logger.info("GET request to {uri}".format(uri=uri))
@@ -59,11 +74,14 @@ class Recurly(object):
     has_more = True
     while has_more:
       json = self._get(path)
-      has_more = json["has_more"]
-      path = json["next"]
-      data = json["data"]
-      for item in data:
-        yield item
+      try:
+        has_more = json["has_more"]
+        path = json["next"]
+        data = json["data"]
+        for item in data:
+          yield item
+      except KeyError:
+        yield json
 
   # 
   # Methods to retrieve data per stream/resource.
@@ -77,8 +95,11 @@ class Recurly(object):
   def billing_info(self, column_name, bookmark):
     accounts = self.accounts(column_name, bookmark)
     for account in accounts:
-      for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
-        yield item
+      try:
+        for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
+          yield item
+      except (requests.exceptions.HTTPError,KeyError) as e:
+        pass
 
   
   def adjustments(self, column_name, bookmark):
@@ -131,6 +152,7 @@ class Recurly(object):
 
 
   def transactions(self, column_name, bookmark):
+    column_name = "updated_at"
     return self._get_all("sites/{site_id}/transactions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
 

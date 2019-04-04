@@ -438,7 +438,7 @@
             "last_four": {
               "type": [
                 "null",
-                "stri"
+                "string"
               ]
             },
             "exp_month": {
@@ -511,7 +511,7 @@
             "country": {
               "type": [
                 "null",
-                "st"
+                "string"
               ]
             }
           }

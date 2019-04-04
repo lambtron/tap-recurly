@@ -128,40 +128,8 @@
         "plans": {
           "type": [
             "null",
-            "array"
-          ],
-          "items": {
-            "type": [
-              "null",
-              "object"
-            ],
-            "properties": {
-              "id": {
-                "type": [
-                  "null",
-                  "string"
-                ]
-              },
-              "object": {
-                "type": [
-                  "null",
-                  "string"
-                ]
-              },
-              "code": {
-                "type": [
-                  "null",
-                  "string"
-                ]
-              },
-              "name": {
-                "type": [
-                  "null",
-                  "string"
-                ]
-              }
-            }
-          }
+            "string"
+          ]
         },
         "redemption_resource": {
           "type": [
@@ -201,7 +169,7 @@
                   "currency": {
                     "type": [
                       "null",
-                      "str"
+                      "string"
                     ]
                   },
                   "amount": {
@@ -292,7 +260,7 @@
     "currency": {
       "type": [
         "null",
-        "str"
+        "string"
       ]
     },
     "discounted": {
