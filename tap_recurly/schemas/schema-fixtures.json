@@ -72,7 +72,7 @@
         "object":"string",
         "card_type":"American Express",
         "first_six":"string",
-        "last_four":"stri",
+        "last_four":"string",
         "exp_month":0,
         "exp_year":0
       },
@@ -87,7 +87,7 @@
       "updated_at":"2019-02-25T20:13:10Z",
       "updated_by":{  
         "ip":"string",
-        "country":"st"
+        "country":"string"
       }
     }
   },
@@ -169,7 +169,7 @@
       "postal_code":"string",
       "country":"string"
     },
-    "currency":"str",
+    "currency":"string",
     "discount":0,
     "subtotal":0,
     "tax":0,
@@ -215,7 +215,7 @@
       "accounting_code":"string",
       "product_code":"string",
       "credit_reason_code":"general",
-      "currency":"str",
+      "currency":"string",
       "amount":0,
       "description":"string",
       "quantity":1,
@@ -274,7 +274,7 @@
         ],
         "type":"authorization",
         "origin":"api",
-        "currency":"str",
+        "currency":"string",
         "amount":0,
         "status":"pending",
         "success":true,
@@ -295,7 +295,7 @@
           "object":"credit_card",
           "card_type":"American Express",
           "first_six":"string",
-          "last_four":"stri",
+          "last_four":"string",
           "exp_month":0,
           "exp_year":0
         },
@@ -355,7 +355,7 @@
           "type":"charge",
           "state":"pending"
         },
-        "currency":"str",
+        "currency":"string",
         "amount":0,
         "original_credit_payment_id":"string",
         "refund_transaction":{
@@ -391,7 +391,7 @@
           ],
           "type":"authorization",
           "origin":"api",
-          "currency":"str",
+          "currency":"string",
           "amount":0,
           "status":"pending",
           "success":true,
@@ -412,7 +412,7 @@
             "object":"credit_card",
             "card_type":"American Express",
             "first_six":"string",
-            "last_four":"stri",
+            "last_four":"string",
             "exp_month":0,
             "exp_year":0
           },
@@ -485,7 +485,7 @@
       "percent":0,
       "currencies":[
         {
-          "currency":"str",
+          "currency":"string",
           "amount":0
         }
       ],
@@ -538,7 +538,7 @@
       "postal_code": "string",
       "country": "string"
     },
-    "currency": "str",
+    "currency": "string",
     "discount": 0,
     "subtotal": 0,
     "tax": 0,
@@ -589,7 +589,7 @@
           "accounting_code": "string",
           "product_code": "string",
           "credit_reason_code": "general",
-          "currency": "str",
+          "currency": "string",
           "amount": 0,
           "description": "string",
           "quantity": 1,
@@ -650,7 +650,7 @@
         ],
         "type": "authorization",
         "origin": "api",
-        "currency": "str",
+        "currency": "string",
         "amount": 0,
         "status": "pending",
         "success": true,
@@ -671,7 +671,7 @@
           "object": "credit_card",
           "card_type": "American Express",
           "first_six": "string",
-          "last_four": "stri",
+          "last_four": "string",
           "exp_month": 0,
           "exp_year": 0
         },
@@ -729,7 +729,7 @@
           "type": "charge",
           "state": "pending"
         },
-        "currency": "str",
+        "currency": "string",
         "amount": 0,
         "original_credit_payment_id": "string",
         "refund_transaction": {
@@ -765,7 +765,7 @@
           ],
           "type": "authorization",
           "origin": "api",
-          "currency": "str",
+          "currency": "string",
           "amount": 0,
           "status": "pending",
           "success": true,
@@ -786,7 +786,7 @@
             "object": "credit_card",
             "card_type": "American Express",
             "first_six": "string",
-            "last_four": "stri",
+            "last_four": "string",
             "exp_month": 0,
             "exp_year": 0
           },
@@ -854,7 +854,7 @@
         "percent": 0,
         "currencies": [
           {
-            "currency": "str",
+            "currency": "string",
             "amount": 0
           }
         ],
@@ -872,7 +872,7 @@
       "expired_at": "2019-02-25T22:30:15Z"
     },
     "state": "active",
-    "currency": "str",
+    "currency": "string",
     "discounted": "string",
     "created_at": "2019-02-25T22:30:15Z",
     "updated_at": "2019-02-25T22:30:15Z",
@@ -897,7 +897,7 @@
     "tax_exempt": true,
     "currencies": [
       {
-        "currency": "str",
+        "currency": "string",
         "setup_fee": 0,
         "unit_amount": 0
       }
@@ -925,7 +925,7 @@
     "default_quantity": 1,
     "currencies": [
       {
-        "currency": "str",
+        "currency": "string",
         "unit_amount": 0
       }
     ],
@@ -987,7 +987,7 @@
             "percent": 0,
             "currencies": [
               {
-                "currency": "str",
+                "currency": "string",
                 "amount": 0
               }
             ],
@@ -1053,7 +1053,7 @@
     "auto_renew": true,
     "paused_at": "2019-02-25T22:39:48Z",
     "remaining_pause_cycles": 0,
-    "currency": "str",
+    "currency": "string",
     "unit_amount": 0,
     "quantity": 0,
     "add_ons": [
@@ -1129,7 +1129,7 @@
     ],
     "type": "authorization",
     "origin": "api",
-    "currency": "str",
+    "currency": "string",
     "amount": 0,
     "status": "pending",
     "success": true,
@@ -1150,7 +1150,7 @@
       "object": "credit_card",
       "card_type": "American Express",
       "first_six": "string",
-      "last_four": "stri",
+      "last_four": "string",
       "exp_month": 0,
       "exp_year": 0
     },

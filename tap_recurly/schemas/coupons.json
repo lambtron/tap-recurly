@@ -145,7 +145,7 @@
               "currency": {
                 "type": [
                   "null",
-                  "str"
+                  "string"
                 ]
               },
               "amount": {
