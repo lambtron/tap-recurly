@@ -123,7 +123,7 @@ class BillingInfo(Stream):
     name = "billing_info"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "account_code" ]
+    key_properties = [ "account_id" ]
 
 
 class Adjustments(Stream):
