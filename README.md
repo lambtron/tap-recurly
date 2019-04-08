@@ -14,7 +14,7 @@ Tap for [Recurly](https://recurly.com/).
 In the directory:
 
 ```
-$ mkvirtualenv -p python3 tap-toggl
+$ mkvirtualenv -p python3 tap-recurly
 $ pip3 install -e .
 ```
 

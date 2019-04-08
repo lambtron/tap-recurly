@@ -1,2 +1,2 @@
 include LICENSE
-include tap_toggl/schemas/*.json
+include tap_recurly/schemas/*.json
