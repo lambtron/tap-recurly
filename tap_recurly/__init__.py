@@ -22,8 +22,7 @@ REQUIRED_CONFIG_KEYS = [
     "start_date",
     "user_agent",
     "subdomain",
-    "api_key",
-    "quota_limit"
+    "api_key"
 ]
 
 
@@ -80,9 +79,14 @@ def main():
         "start_date": parsed_args.config['start_date'],
         "user_agent": parsed_args.config['user_agent'],
         "subdomain": parsed_args.config['subdomain'],
-        "api_key": parsed_args.config['api_key'],
-        "quota_limit": parsed_args.config['quota_limit']
+        "api_key": parsed_args.config['api_key']
     }
+
+    try:
+        creds["quota_limit"] = parsed_args.config['quota_limit']
+    except TypeError:
+        pass
+
     client = Recurly(**creds)
     Context.config = parsed_args.config
 

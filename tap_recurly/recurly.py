@@ -19,45 +19,50 @@ logger = logging.getLogger()
 """ Simple wrapper for Recurly. """
 class Recurly(object):
 
-  def __init__(self, start_date=None, user_agent=None, subdomain=None, api_key=None, quota_limit=50):
+  def __init__(self, subdomain, api_key, start_date=None, user_agent=None, quota_limit=100):
     self.headers = {'Accept': 'application/vnd.recurly.v2018-08-09'}
     self.site_id = "subdomain-{subdomain}".format(subdomain=subdomain)
     self.user_agent = user_agent
     self.start_date = start_date
     self.limit = 200
-    self.total_rate_limit = 6000
-    self.quota_rate_limit = int(quota_limit) * self.total_rate_limit / 100
     self.api_key = api_key
     self.uri = "https://partner-api.recurly.com/"
     self.quota_limit = int(quota_limit)
 
 
-  def sleep_until(self, timestamp=None):
+  def sleep_until(self, timestamp):
     difference_in_seconds = int(timestamp) - time.time()
     logger.info("Sleeping {seconds} seconds until {timestamp}".format(seconds=difference_in_seconds, timestamp=timestamp))
-    logger.info("Quota Limit: %s", self.quota_limit)
-    logger.info("Quota Rate Limit: %s", self.quota_rate_limit)
+    logger.info("Quota Rate Limit (tap's permitted usage %% of the API): %s", self.quota_limit)
     time.sleep(difference_in_seconds)
 
 
-  def check_rate_limit(self, rate_limit_remaining=None, rate_limit_reset=None):
-    if int(rate_limit_remaining) <= self.quota_rate_limit:
-      self.sleep_until(rate_limit_reset)
+  def check_rate_limit(self, limit_remaining, limit_limit, limit_reset_time):
+    logger.info("Quota Remaining / Quota Total: %s / %s", limit_remaining, limit_limit)
+    if 100 - (100 * int(limit_remaining) / int(limit_limit)) > self.quota_limit:
+      self.sleep_until(limit_reset_time)
 
 
+  def retry_handler(details):
+    logger.info("Received 429 -- sleeping for %s seconds",
+                details['wait'])
+
+  
+  @backoff.on_exception(backoff.expo,
+                        requests.exceptions.RetryError,
+                        on_backoff=retry_handler,
+                        max_tries=5)
   def _get(self, path, **kwargs):
     uri = "{uri}{path}".format(uri=self.uri, path=path)
     logger.info("GET request to {uri}".format(uri=uri))
     response = requests.get(uri, headers=self.headers, auth=HTTPBasicAuth(self.api_key, ''))
     response.raise_for_status()
-    #self.check_rate_limit(response.headers.get('X-RateLimit-Remaining'), response.headers.get('X-RateLimit-Reset'))
+
     limit_remaining = response.headers.get('X-RateLimit-Remaining')
     limit_limit = response.headers.get('X-RateLimit-Limit')
     limit_reset_time = response.headers.get('X-RateLimit-Reset')
+    self.check_rate_limit(limit_remaining, limit_limit, limit_reset_time)
 
-    logger.info("Quota Remaining / Quota Total: %s / %s", limit_remaining, limit_limit)
-    if int(limit_remaining) < 1:
-      self.sleep_until(limit_reset_time)
     return response.json()
 
 

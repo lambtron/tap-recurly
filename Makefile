@@ -25,6 +25,10 @@ release:
 test:
 	@python3 tests/test_tap_toggl.py
 
+# Discover.
+disc: 
+	@tap-recurly -c config.json --discover > catalog.json
+
 #
 # Phonies.
 #
@@ -34,4 +38,4 @@ test:
 .PHONY: release
 .PHONY: schema
 .PHONY: test
-
+.PHONY: disc
