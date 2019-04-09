@@ -50,7 +50,14 @@ class Recurly(object):
     logger.info("GET request to {uri}".format(uri=uri))
     response = requests.get(uri, headers=self.headers, auth=HTTPBasicAuth(self.api_key, ''))
     response.raise_for_status()
-    self.check_rate_limit(response.headers.get('X-RateLimit-Remaining'), response.headers.get('X-RateLimit-Reset'))
+    #self.check_rate_limit(response.headers.get('X-RateLimit-Remaining'), response.headers.get('X-RateLimit-Reset'))
+    limit_remaining = response.headers.get('X-RateLimit-Remaining')
+    limit_limit = response.headers.get('X-RateLimit-Limit')
+    limit_reset_time = response.headers.get('X-RateLimit-Reset')
+
+    logger.info("Quota Remaining / Quota Total: %s / %s", limit_remaining, limit_limit)
+    if int(limit_remaining) < 1:
+      self.sleep_until(limit_reset_time)
     return response.json()
 
 
