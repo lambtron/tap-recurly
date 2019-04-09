@@ -14,20 +14,6 @@ import time
 
 
 logger = logging.getLogger()
-MAX_RETRIES = 1
-
-
-def error_handler(details):
-  logger.info("Received error -- Retry %s/%s", details['tries'], MAX_RETRIES)
-
-
-def is_not_status_code_fn(status_code):
-    def gen_fn(exc):
-        if getattr(exc, 'code', None) and exc.code not in status_code:
-            return True
-        # Retry other errors up to the max
-        return False
-    return gen_fn
 
 
 """ Simple wrapper for Recurly. """
@@ -56,14 +42,9 @@ class Recurly(object):
       self.sleep_until(rate_limit_reset)
 
 
-  @backoff.on_exception(backoff.expo,
-                        requests.exceptions.RequestException,
-                        on_backoff=error_handler,
-                        max_tries=MAX_RETRIES)
   def _get(self, path, **kwargs):
     uri = "{uri}{path}".format(uri=self.uri, path=path)
     logger.info("GET request to {uri}".format(uri=uri))
-
     response = requests.get(uri, headers=self.headers, auth=HTTPBasicAuth(self.api_key, ''))
     response.raise_for_status()
     self.check_rate_limit(response.headers.get('X-RateLimit-Remaining'), response.headers.get('X-RateLimit-Reset'))
@@ -73,13 +54,17 @@ class Recurly(object):
   def _get_all(self, path, **kwargs):
     has_more = True
     while has_more:
-      json = self._get(path)
       try:
+        json = self._get(path)
         has_more = json["has_more"]
         path = json["next"]
         data = json["data"]
         for item in data:
           yield item
+      except requests.exceptions.HTTPError as err:
+        logger.info("Response returned http error code {code}".format(code=err.response.status_code))
+        if err.response.status_code == 404:
+          break
       except KeyError:
         yield json
 
@@ -95,11 +80,8 @@ class Recurly(object):
   def billing_info(self, column_name, bookmark):
     accounts = self.accounts(column_name, bookmark)
     for account in accounts:
-      try:
-        for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
-          yield item
-      except (requests.exceptions.HTTPError,KeyError) as e:
-        pass
+      for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
+        yield item
 
   
   def adjustments(self, column_name, bookmark):
