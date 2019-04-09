@@ -29,11 +29,14 @@ class Recurly(object):
     self.quota_rate_limit = int(quota_limit) * self.total_rate_limit / 100
     self.api_key = api_key
     self.uri = "https://partner-api.recurly.com/"
+    self.quota_limit = int(quota_limit)
 
 
   def sleep_until(self, timestamp=None):
     difference_in_seconds = int(timestamp) - time.time()
     logger.info("Sleeping {seconds} seconds until {timestamp}".format(seconds=difference_in_seconds, timestamp=timestamp))
+    logger.info("Quota Limit: %s", self.quota_limit)
+    logger.info("Quota Rate Limit: %s", self.quota_rate_limit)
     time.sleep(difference_in_seconds)
 
 
