@@ -84,7 +84,7 @@ def main():
 
     try:
         creds["quota_limit"] = parsed_args.config['quota_limit']
-    except TypeError:
+    except KeyError:
         pass
 
     client = Recurly(**creds)

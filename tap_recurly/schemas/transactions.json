@@ -40,6 +40,18 @@
             "string"
           ]
         },
+        "bill_to": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "parent_account_id": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
         "object": {
           "type": [
             "null",

@@ -149,5 +149,4 @@ tap_toast/schemas/schema-fixture.json
 node_modules
 make-schema.js
 package-lock.json
-
-
+generate-schema.js

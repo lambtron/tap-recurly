@@ -16,6 +16,12 @@
         "string"
       ]
     },
+    "bill_to": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "state": {
       "type": [
         "null",
