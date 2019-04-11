@@ -38,8 +38,8 @@ class Recurly(object):
 
 
   def check_rate_limit(self, limit_remaining, limit_limit, limit_reset_time):
-    logger.info("Quota Remaining / Quota Total: %s / %s", limit_remaining, limit_limit)
     if 100 - (100 * int(limit_remaining) / int(limit_limit)) > self.quota_limit:
+      logger.info("Quota Remaining / Quota Total: %s / %s", limit_remaining, limit_limit)
       self.sleep_until(limit_reset_time)
 
 
