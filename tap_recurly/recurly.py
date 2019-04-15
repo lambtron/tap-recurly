@@ -62,7 +62,6 @@ class Recurly(object):
     limit_limit = response.headers.get('X-RateLimit-Limit')
     limit_reset_time = response.headers.get('X-RateLimit-Reset')
     self.check_rate_limit(limit_remaining, limit_limit, limit_reset_time)
-
     return response.json()
 
 
@@ -78,8 +77,14 @@ class Recurly(object):
           yield item
       except requests.exceptions.HTTPError as err:
         logger.info("Response returned http error code {code}".format(code=err.response.status_code))
+
+        if err.response.status_code == 401:
+          logger.critical("Response returned http error code 401")
+          raise
+
         if err.response.status_code == 404:
           break
+
       except KeyError:
         yield json
         break
