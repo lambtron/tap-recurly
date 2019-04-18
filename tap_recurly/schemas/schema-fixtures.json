@@ -5,6 +5,13 @@
     "bill_to": "string",
     "state":"active",
     "hosted_login_token":"string",
+    "custom_fields": [
+      {
+        "name": "string",
+        "value": "string"
+      }
+    ],
+    "exemption_certificate": "string",
     "shipping_addresses":[{  
       "id":"string",
       "account_id":"string",
@@ -99,6 +106,13 @@
     "first_name":"string",
     "last_name":"string",
     "company":"string",
+    "custom_fields": [
+      {
+        "name": "string",
+        "value": "string"
+      }
+    ],
+    "exemption_certificate": "string",
     "address":{
       "first_name":"string",
       "last_name":"string",
@@ -118,7 +132,10 @@
       "first_six":"string",
       "last_four":"string",
       "exp_month":0,
-      "exp_year":0
+      "exp_year":0,
+      "account_type": "string",
+      "routing_number": "integer",
+      "routing_number_bank": "string"
     },
     "fraud":{
       "score":1,
@@ -141,6 +158,9 @@
     "type": "string",
     "state": "string",
     "legacy_category": "string",
+    "credit_applied": 0,
+    "proration_rate": "number",
+    "refunded_quantity": 0,
     "account": {
         "id": "string",
         "object": "string",
@@ -603,6 +623,7 @@
     "id": "string",
     "object": "string",
     "account_id": "string",
+    "unique_code_template": "string",
     "account": {
       "id": "string",
       "object": "string",
@@ -726,8 +747,10 @@
     "account": {
       "id": "string",
       "object": "string",
+      "bill_to": "string",
       "code": "string",
       "email": "user@example.com",
+      "parent_account_id": "string",
       "first_name": "string",
       "last_name": "string",
       "company": "string"
@@ -959,7 +982,15 @@
     "gateway_approval_code": "string",
     "gateway_response_code": "string",
     "gateway_response_time": 0,
-    "gateway_response_values": {},
+    "gateway_response_values": {
+      "amount": 0,
+      "amount_refunded": 0,
+      "card_fingerprint": "string",
+      "card_type": "string",
+      "currency": "string",
+      "description": "string",
+      "livemode": "string"
+    },
     "cvv_check": "D",
     "avs_check": "A",
     "created_at": "2019-02-25T22:41:43Z",

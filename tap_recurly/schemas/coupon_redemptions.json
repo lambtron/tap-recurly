@@ -22,6 +22,12 @@
         "string"
       ]
     },
+    "unique_code_template": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "account": {
       "type": [
         "null",

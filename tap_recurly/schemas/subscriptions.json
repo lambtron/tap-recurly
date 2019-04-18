@@ -40,6 +40,12 @@
             "string"
           ]
         },
+        "bill_to": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
         "code": {
           "type": [
             "null",
@@ -47,6 +53,12 @@
           ]
         },
         "email": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "parent_account_id": {
           "type": [
             "null",
             "string"

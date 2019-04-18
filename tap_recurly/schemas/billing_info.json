@@ -40,6 +40,38 @@
         "string"
       ]
     },
+    "custom_fields": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {
+          "name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "value": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      }
+    },
+    "exemption_certificate": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "address": {
       "type": [
         "null",
@@ -154,6 +186,24 @@
           "type": [
             "null",
             "number"
+          ]
+        },
+        "account_type": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "routing_number": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "routing_number_bank": {
+          "type": [
+            "null",
+            "string"
           ]
         }
       }

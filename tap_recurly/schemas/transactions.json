@@ -430,7 +430,50 @@
         "null",
         "object"
       ],
-      "properties": {}
+      "properties": {
+        "amount": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "amount_refunded": {
+          "type": [
+            "null",
+            "number"
+          ]
+        },
+        "card_fingerprint": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "card_type": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "currency": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "description": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "livemode": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
     },
     "cvv_check": {
       "type": [

@@ -40,6 +40,24 @@
         "string"
       ]
     },
+    "credit_applied": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "proration_rate": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "refunded_quantity": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
     "account": {
       "type": [
         "null",

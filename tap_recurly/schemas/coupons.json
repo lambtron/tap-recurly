@@ -104,8 +104,7 @@
     "plans": {
       "type": [
         "null",
-        "array",
-        "string"
+        "array"
       ],
       "items": {
         "type": [
