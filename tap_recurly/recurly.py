@@ -109,25 +109,19 @@ class Recurly(object):
     return self._get_all("sites/{site_id}/line_items?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
 
-  def accounts_coupon_redemptions(self, column_name, bookmark):
-    accounts = self.accounts(column_name, bookmark)
-    for account in accounts:
-      for item in self._get_all("sites/{site_id}/accounts/{account_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
-        yield item
+  def accounts_coupon_redemptions(self, account_id, column_name):
+    for item in self._get_all("sites/{site_id}/accounts/{account_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account_id, limit=self.limit, column_name=column_name)):
+      yield item
 
 
-  def invoices_coupon_redemptions(self, column_name, bookmark):
-    invoices = self.invoices(column_name, bookmark)
-    for invoice in invoices:
-      for item in self._get_all("sites/{site_id}/invoices/{invoice_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, invoice_id=invoice["id"], limit=self.limit, column_name=column_name)):
-        yield item
+  def invoices_coupon_redemptions(self, invoice_id, column_name):
+    for item in self._get_all("sites/{site_id}/invoices/{invoice_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, invoice_id=invoice_id, limit=self.limit, column_name=column_name)):
+      yield item
 
 
-  def subscriptions_coupon_redemptions(self, column_name, bookmark):
-    subscriptions = self.subscriptions(column_name, bookmark)
-    for subscription in subscriptions:
-      for item in self._get_all("sites/{site_id}/subscriptions/{subscription_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, subscription_id=subscription["id"], limit=self.limit, column_name=column_name)):
-        yield item
+  def subscriptions_coupon_redemptions(self, subscription_id, column_name):
+    for item in self._get_all("sites/{site_id}/subscriptions/{subscription_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, subscription_id=subscription_id, limit=self.limit, column_name=column_name)):
+      yield item
 
 
   def coupons(self, column_name, bookmark):

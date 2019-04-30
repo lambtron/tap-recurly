@@ -125,6 +125,15 @@ class BillingInfo(Stream):
     replication_key = "updated_at"
     key_properties = [ "account_id" ]
 
+    # Needs its own sync function since it's bookmark is off Accounts.
+    def sync(self, state):
+        get_data = getattr(self.client, self.name)
+        bookmark = self.get_bookmark(state, "accounts")
+        res = get_data(self.replication_key, bookmark)
+        for item in res:
+            self.update_bookmark(state, item[self.replication_key])
+            yield (self.stream, item)
+
 
 class Adjustments(Stream):
     name = "adjustments"
@@ -136,20 +145,31 @@ class Adjustments(Stream):
 class CouponRedemptions(Stream):
     name = "coupon_redemptions"
     replication_method = "INCREMENTAL"
-    replication_key = "updated_at"
+    # instead of `updated_at`, since parent objects do not update
+    # when the coupon redemptions are updated.
+    replication_key = "created_at" 
     key_properties = [ "id" ]
     parent_streams = [ "accounts", "subscriptions", "invoices" ]
 
-    # It has it's own sync since it uses multiplpe parent streams.
+    # It has it's own sync since it uses multiple parent streams.
     def sync(self, state):
-        bookmark = {}
         for stream in self.parent_streams:
             name = "{stream}_{name}".format(stream=stream, name=self.name)
-            get_data = getattr(self.client, name)
-            res = get_data(self.replication_key, self.get_bookmark(state, name))
-            for item in res:
-                self.update_bookmark(state, item[self.replication_key], name)
-                yield (self.stream, item)
+            
+            # Define get parent and child functions.
+            get_parent = getattr(self.client, stream)
+            get_child = getattr(self.client, name)
+
+            # But use the specific `parent_child` bookmark.
+            parents = get_parent(self.replication_key, self.get_bookmark(state, name))
+            
+            for parent in parents:
+                self.update_bookmark(state, parent[self.replication_key], name)
+                child_rows = get_child(parent["id"], self.replication_key)
+                for child in child_rows:
+                    self.update_bookmark(state, child[self.replication_key], name)
+                    yield (self.stream, child)
+
 
 
 class Coupons(Stream):
