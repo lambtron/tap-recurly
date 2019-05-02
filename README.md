@@ -39,13 +39,13 @@ This config is to authenticate into Recurly. The `quota_limit` is the percentage
 This command returns a JSON that describes the schema of each table.
 
 ```
-$ tap-toggl --config config.json --discover
+$ tap-recurly --config config.json --discover
 ```
 
 To save this to `catalog.json`:
 
 ```
-$ tap-toggl --config config.json --discover > catalog.json
+$ tap-recurly --config config.json --discover > catalog.json
 ```
 
 ### Field selection
@@ -93,7 +93,7 @@ You can tell the tap to extract specific fields by editing `catalog.json` to mak
 With an annotated `catalog.json`, the tap can be invoked in sync mode:
 
 ```
-$ tap-toggl --config config.json --catalog catalog.json
+$ tap-recurly --config config.json --catalog catalog.json
 ```
 
 Messages are written to standard output following the Singer specification. The resultant stream of JSON data can be consumed by a Singer target.

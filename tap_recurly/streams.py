@@ -164,12 +164,13 @@ class CouponRedemptions(Stream):
             parents = get_parent(self.replication_key, self.get_bookmark(state, name))
             
             for parent in parents:
+                # Use `self.replication` here because parent object is keyed on `created_at` instead
+                # of `parent.replication_key` which is `updated_at`
                 self.update_bookmark(state, parent[self.replication_key], name)
                 child_rows = get_child(parent["id"], self.replication_key)
                 for child in child_rows:
-                    self.update_bookmark(state, child[self.replication_key], name)
                     yield (self.stream, child)
-
+            self.update_bookmark(state, None, name)
 
 
 class Coupons(Stream):
