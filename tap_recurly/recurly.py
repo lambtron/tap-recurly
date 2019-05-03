@@ -98,11 +98,9 @@ class Recurly(object):
 
 
   # substream of accounts
-  def billing_info(self, column_name, bookmark):
-    accounts = self.accounts(column_name, bookmark)
-    for account in accounts:
-      for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account["id"], limit=self.limit, column_name=column_name)):
-        yield item
+  def billing_info(self, account_id, column_name):
+    for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account_id, limit=self.limit, column_name=column_name)):
+      yield item
 
   
   def adjustments(self, column_name, bookmark):

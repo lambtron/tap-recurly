@@ -127,12 +127,14 @@ class BillingInfo(Stream):
 
     # Needs its own sync function since it's bookmark is off Accounts.
     def sync(self, state):
-        get_data = getattr(self.client, self.name)
-        bookmark = self.get_bookmark(state, "accounts")
-        res = get_data(self.replication_key, bookmark)
-        for item in res:
-            self.update_bookmark(state, item[self.replication_key])
-            yield (self.stream, item)
+        get_parent = getattr(self.client, "accounts")
+        get_child = getattr(self.client, self.name)
+        parents = get_parent(self.replication_key, self.get_bookmark(state))
+        for parent in parents:
+            self.update_bookmark(state, parent[self.replication_key])
+            res = get_child(parent["id"], self.replication_key)
+            for item in res:
+                yield (self.stream, item)
 
 
 class Adjustments(Stream):
