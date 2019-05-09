@@ -53,7 +53,8 @@ class Stream():
 
     def update_bookmark(self, state, value, name=None):
         name = self.name if not name else name
-        if self.is_bookmark_old(state, value, name):
+        # when `value` is None, it means to set the bookmark to None
+        if value is None or self.is_bookmark_old(state, value, name):
             singer.write_bookmark(state, name, self.replication_key, value)
 
 
