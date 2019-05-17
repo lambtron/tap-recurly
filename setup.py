@@ -17,7 +17,7 @@ setup(name='tap-recurly',
       extras_require={
         'dev': [
             'ipdb==0.11',
-            'pylint==2.1.1',
+            'pylint==2.3.0',
         ]
       },
       entry_points='''
