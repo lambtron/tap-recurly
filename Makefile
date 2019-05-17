@@ -23,7 +23,7 @@ release:
 
 # Test.
 test:
-	pylint tap_recurly -d missing-docstring
+	pylint tap_recurly -d missing-docstring,useless-object-inheritance
 
 # Discover.
 disc: 
