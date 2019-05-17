@@ -23,7 +23,7 @@ release:
 
 # Test.
 test:
-	pylint tap_recurly
+	pylint tap_recurly -d missing-docstring
 
 # Discover.
 disc: 
