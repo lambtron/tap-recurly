@@ -2,8 +2,6 @@
 # Module dependencies.
 #
 
-import os
-import json
 import singer
 from tap_recurly.streams import STREAMS
 

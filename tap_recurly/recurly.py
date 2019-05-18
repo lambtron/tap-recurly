@@ -2,9 +2,7 @@
 # Module dependencies.
 #
 
-from datetime import datetime, timedelta
 from requests.auth import HTTPBasicAuth
-from singer import utils
 from urllib import parse
 import backoff
 import requests

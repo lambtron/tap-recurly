@@ -4,12 +4,9 @@
 
 import os
 import json
-import datetime
-import pytz
 import singer
 from singer import metadata
 from singer import utils
-from singer.metrics import Point
 from dateutil.parser import parse
 from tap_recurly.context import Context
 
