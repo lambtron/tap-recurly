@@ -1,4 +1,3 @@
-
 #
 # Module dependencies.
 #
@@ -47,7 +46,7 @@ class Recurly(object):
     logger.info("Received 429 -- sleeping for %s seconds",
                 details['wait'])
 
-  
+
   @backoff.on_exception(backoff.expo,
                         requests.exceptions.RetryError,
                         on_backoff=retry_handler,
@@ -89,9 +88,9 @@ class Recurly(object):
         yield json
         break
 
-  # 
+  #
   # Methods to retrieve data per stream/resource.
-  # 
+  #
 
   def accounts(self, column_name, bookmark):
     return self._get_all("sites/{site_id}/accounts?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
@@ -102,7 +101,7 @@ class Recurly(object):
     for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account_id, limit=self.limit, column_name=column_name)):
       yield item
 
-  
+
   def adjustments(self, column_name, bookmark):
     return self._get_all("sites/{site_id}/line_items?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
 
@@ -149,8 +148,3 @@ class Recurly(object):
   def transactions(self, column_name, bookmark):
     column_name = "updated_at"
     return self._get_all("sites/{site_id}/transactions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
-
-
-
-
-

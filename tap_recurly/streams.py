@@ -1,7 +1,6 @@
-
-# 
+#
 # Module dependencies.
-# 
+#
 
 import os
 import json
@@ -25,7 +24,7 @@ def get_abs_path(path):
 
 def needs_parse_to_date(string):
     if isinstance(string, str):
-        try: 
+        try:
             parse(string)
             return True
         except ValueError:
@@ -111,7 +110,7 @@ class Stream():
 
         else:
             raise Exception('Replication key not defined for {stream}'.format(self.name))
-        
+
 
 class Accounts(Stream):
     name = "accounts"
@@ -150,7 +149,7 @@ class CouponRedemptions(Stream):
     replication_method = "INCREMENTAL"
     # instead of `updated_at`, since parent objects do not update
     # when the coupon redemptions are updated.
-    replication_key = "created_at" 
+    replication_key = "created_at"
     key_properties = [ "id" ]
     parent_streams = [ "accounts", "subscriptions", "invoices" ]
 
@@ -158,14 +157,14 @@ class CouponRedemptions(Stream):
     def sync(self, state):
         for stream in self.parent_streams:
             name = "{stream}_{name}".format(stream=stream, name=self.name)
-            
+
             # Define get parent and child functions.
             get_parent = getattr(self.client, stream)
             get_child = getattr(self.client, name)
 
             # But use the specific `parent_child` bookmark.
             parents = get_parent(self.replication_key, self.get_bookmark(state, name))
-            
+
             for parent in parents:
                 # Use `self.replication` here because parent object is keyed on `created_at` instead
                 # of `parent.replication_key` which is `updated_at`
@@ -231,9 +230,3 @@ STREAMS = {
     "subscriptions": Subscriptions,
     "transactions": Transactions
 }
-
-
-
-
-
-

@@ -1,7 +1,6 @@
-
-# 
+#
 # Module dependencies.
-# 
+#
 
 import json
 import singer
@@ -10,7 +9,6 @@ from singer import metadata
 from singer import Transformer
 
 #LOGGER = singer.get_logger()
-
 
 def sync_stream(state, instance):
     stream = instance.stream

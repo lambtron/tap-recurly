@@ -1,7 +1,6 @@
-
-# 
+#
 # Module dependencies.
-# 
+#
 
 import os
 import json
@@ -17,7 +16,3 @@ def discover_streams(client):
         schema = singer.resolve_schema_references(s.load_schema())
         streams.append({'stream': s.name, 'tap_stream_id': s.name, 'schema': schema, 'metadata': s.load_metadata()})
     return streams
-
-
-
-
