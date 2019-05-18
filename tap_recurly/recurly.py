@@ -47,7 +47,7 @@ class Recurly():
                         requests.exceptions.RetryError,
                         on_backoff=retry_handler,
                         max_tries=5)
-  def _get(self, path, **kwargs):
+  def _get(self, path):
     uri = "{uri}{path}".format(uri=self.uri, path=path)
     logger.info("GET request to %s", uri)
     response = requests.get(uri, headers=self.headers, auth=HTTPBasicAuth(self.api_key, ''))
@@ -60,7 +60,7 @@ class Recurly():
     return response.json()
 
 
-  def _get_all(self, path, **kwargs):
+  def _get_all(self, path):
     has_more = True
     while has_more:
       try:
