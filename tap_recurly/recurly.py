@@ -91,58 +91,118 @@ class Recurly(object):
   #
 
   def accounts(self, column_name, bookmark):
-    return self._get_all("sites/{site_id}/accounts?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
-
+    url = "sites/{site_id}/accounts"
+    url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
+    url.format(site_id=self.site_id,
+               limit=self.limit,
+               column_name=column_name,
+               bookmark=parse.quote(bookmark))
+    return self._get_all(url)
 
   # substream of accounts
   def billing_info(self, account_id, column_name):
-    for item in self._get_all("sites/{site_id}/accounts/{account_id}/billing_info?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account_id, limit=self.limit, column_name=column_name)):
+    url = "sites/{site_id}/accounts/{account_id}/billing_info"
+    url += "?limit={limit}&sort={column_name}&order=asc"
+    url.format(site_id=self.site_id,
+               account_id=account_id,
+               limit=self.limit,
+               column_name=column_name)
+    for item in self._get_all(url):
       yield item
-
 
   def adjustments(self, column_name, bookmark):
-    return self._get_all("sites/{site_id}/line_items?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
-
+    url = "sites/{site_id}/line_items"
+    url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
+    url.format(site_id=self.site_id,
+               limit=self.limit,
+               column_name=column_name,
+               bookmark=parse.quote(bookmark))
+    return self._get_all(url)
 
   def accounts_coupon_redemptions(self, account_id, column_name):
-    for item in self._get_all("sites/{site_id}/accounts/{account_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, account_id=account_id, limit=self.limit, column_name=column_name)):
+    url = "sites/{site_id}/accounts/{account_id}/coupon_redemptions"
+    url += "?limit={limit}&sort={column_name}&order=asc"
+    url.format(site_id=self.site_id,
+               account_id=account_id,
+               limit=self.limit,
+               column_name=column_name)
+    for item in self._get_all(url):
       yield item
-
 
   def invoices_coupon_redemptions(self, invoice_id, column_name):
-    for item in self._get_all("sites/{site_id}/invoices/{invoice_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, invoice_id=invoice_id, limit=self.limit, column_name=column_name)):
+    url = "sites/{site_id}/invoices/{invoice_id}/coupon_redemptions"
+    url += "?limit={limit}&sort={column_name}&order=asc"
+    url.format(site_id=self.site_id,
+               invoice_id=invoice_id,
+               limit=self.limit,
+               column_name=column_name)
+    for item in self._get_all(url):
       yield item
-
 
   def subscriptions_coupon_redemptions(self, subscription_id, column_name):
-    for item in self._get_all("sites/{site_id}/subscriptions/{subscription_id}/coupon_redemptions?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, subscription_id=subscription_id, limit=self.limit, column_name=column_name)):
+    url = "sites/{site_id}/subscriptions/{subscription_id}/coupon_redemptions"
+    url += "?limit={limit}&sort={column_name}&order=asc"
+    url.format(site_id=self.site_id,
+               subscription_id=subscription_id,
+               limit=self.limit,
+               column_name=column_name)
+    for item in self._get_all(url):
       yield item
 
-
   def coupons(self, column_name, bookmark):
-    return self._get_all("sites/{site_id}/coupons?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
-
+    url = "sites/{site_id}/coupons"
+    url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
+    url.format(site_id=self.site_id,
+               limit=self.limit,
+               column_name=column_name,
+               bookmark=parse.quote(bookmark))
+    return self._get_all(url)
 
   def invoices(self, column_name, bookmark):
-    return self._get_all("sites/{site_id}/invoices?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
-
+    url = "sites/{site_id}/invoices"
+    url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
+    url.format(site_id=self.site_id,
+               limit=self.limit,
+               column_name=column_name,
+               bookmark=parse.quote(bookmark))
+    return self._get_all(url)
 
   def plans(self, column_name, bookmark):
-    return self._get_all("sites/{site_id}/plans?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
-
+    url = "sites/{site_id}/plans?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
+    url.format(site_id=self.site_id,
+               limit=self.limit,
+               column_name=column_name,
+               bookmark=parse.quote(bookmark))
+    return self._get_all(url)
 
   # substream of plans
   def plans_add_ons(self, column_name, bookmark):
     plans = self.plans(column_name, bookmark)
     for plan in plans:
-      for item in self._get_all("sites/{site_id}/plans/{plan_id}/add_ons?limit={limit}&sort={column_name}&order=asc".format(site_id=self.site_id, plan_id=plan["id"], limit=self.limit, column_name=column_name)):
+      url = "sites/{site_id}/plans/{plan_id}/add_ons"
+      url += "?limit={limit}&sort={column_name}&order=asc"
+      url.format(site_id=self.site_id,
+                 plan_id=plan["id"],
+                 limit=self.limit,
+                 column_name=column_name)
+      for item in self._get_all(url):
         yield item
 
-
   def subscriptions(self, column_name, bookmark):
-    return self._get_all("sites/{site_id}/subscriptions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
-
+    url = "sites/{site_id}/subscriptions"
+    url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
+    url.format(site_id=self.site_id,
+               limit=self.limit,
+               column_name=column_name,
+               bookmark=parse.quote(bookmark))
+    return self._get_all(url)
 
   def transactions(self, column_name, bookmark):
     column_name = "updated_at"
-    return self._get_all("sites/{site_id}/transactions?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc".format(site_id=self.site_id, limit=self.limit, column_name=column_name, bookmark=parse.quote(bookmark)))
+    url = "sites/{site_id}/transactions"
+    url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
+    url.format(site_id=self.site_id,
+               limit=self.limit,
+               column_name=column_name,
+               bookmark=parse.quote(bookmark))
+    return self._get_all(url)
