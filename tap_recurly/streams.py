@@ -107,7 +107,7 @@ class Stream():
                 yield (self.stream, item)
 
         else:
-            raise Exception('Replication key not defined for {stream}'.format(self.name))
+            raise Exception('Replication key not defined for {stream}'.format(stream=self.name))
 
 
 class Accounts(Stream):
