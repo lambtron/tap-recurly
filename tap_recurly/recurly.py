@@ -12,6 +12,9 @@ import time
 
 logger = logging.getLogger()
 
+def retry_handler(details):
+    logger.info("Received 429 -- sleeping for %s seconds",
+                details['wait'])
 
 """ Simple wrapper for Recurly. """
 class Recurly():
@@ -38,11 +41,6 @@ class Recurly():
     if 100 - (100 * int(limit_remaining) / int(limit_limit)) >= self.quota_limit:
       logger.info("Quota Remaining / Quota Total: %s / %s", limit_remaining, limit_limit)
       self.sleep_until(limit_reset_time)
-
-
-  def retry_handler(details):
-    logger.info("Received 429 -- sleeping for %s seconds",
-                details['wait'])
 
 
   @backoff.on_exception(backoff.expo,
