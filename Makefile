@@ -23,7 +23,7 @@ release:
 
 # Test.
 test:
-	pylint tap_recurly -d missing-docstring,useless-object-inheritance
+	pylint tap_recurly -d missing-docstring,too-few-public-methods,invalid-name,too-many-instance-attributes,too-many-arguments
 
 # Discover.
 disc: 
