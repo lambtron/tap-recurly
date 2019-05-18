@@ -15,7 +15,7 @@ from dateutil.parser import parse
 from tap_recurly.context import Context
 
 
-logger = singer.get_logger()
+LOGGER = singer.get_logger()
 KEY_PROPERTIES = ['id']
 
 
