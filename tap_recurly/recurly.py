@@ -16,8 +16,9 @@ def retry_handler(details):
     logger.info("Received 429 -- sleeping for %s seconds",
                 details['wait'])
 
-""" Simple wrapper for Recurly. """
+
 class Recurly():
+  """ Simple wrapper for Recurly. """
 
   def __init__(self, subdomain, api_key, start_date=None, user_agent=None, quota_limit=100):
     self.headers = {'Accept': 'application/vnd.recurly.v2018-08-09'}
