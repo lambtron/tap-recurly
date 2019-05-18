@@ -2,13 +2,12 @@
 # Module dependencies.
 #
 
-from requests.auth import HTTPBasicAuth
 from urllib import parse
-import backoff
-import requests
 import logging
 import time
-
+import backoff
+import requests
+from requests.auth import HTTPBasicAuth
 
 logger = logging.getLogger()
 
