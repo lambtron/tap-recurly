@@ -47,7 +47,8 @@ class Stream():
 
     def get_bookmark(self, state, name=None):
         name = self.name if not name else name
-        return (singer.get_bookmark(state, name, self.replication_key)) or Context.config["start_date"]
+        return (singer.get_bookmark(state, name, self.replication_key)
+                or Context.config["start_date"])
 
 
     def update_bookmark(self, state, value, name=None):

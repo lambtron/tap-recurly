@@ -19,7 +19,9 @@ def sync_stream(state, instance):
 
             # try:
             with Transformer() as transformer:
-                record = transformer.transform(record, stream.schema.to_dict(), metadata.to_map(stream.metadata))
+                record = transformer.transform(record,
+                                               stream.schema.to_dict(),
+                                               metadata.to_map(stream.metadata))
             singer.write_record(stream.tap_stream_id, record)
             if instance.replication_method == "INCREMENTAL":
                 singer.write_state(state)
