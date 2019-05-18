@@ -29,7 +29,7 @@ class Recurly(object):
 
   def sleep_until(self, timestamp):
     difference_in_seconds = int(timestamp) - time.time()
-    logger.info("Sleeping {seconds} seconds until {timestamp}".format(seconds=difference_in_seconds, timestamp=timestamp))
+    logger.info("Sleeping %s seconds until %s", difference_in_seconds, timestamp)
     logger.info("Quota Rate Limit (tap's permitted usage %% of the API): %s", self.quota_limit)
     time.sleep(difference_in_seconds)
 
@@ -51,7 +51,7 @@ class Recurly(object):
                         max_tries=5)
   def _get(self, path, **kwargs):
     uri = "{uri}{path}".format(uri=self.uri, path=path)
-    logger.info("GET request to {uri}".format(uri=uri))
+    logger.info("GET request to %s", uri)
     response = requests.get(uri, headers=self.headers, auth=HTTPBasicAuth(self.api_key, ''))
     response.raise_for_status()
 
@@ -73,7 +73,7 @@ class Recurly(object):
         for item in data:
           yield item
       except requests.exceptions.HTTPError as err:
-        logger.info("Response returned http error code {code}".format(code=err.response.status_code))
+        logger.info("Response returned http error code %s", err.response.status_code)
 
         if err.response.status_code == 401:
           logger.critical("Response returned http error code 401")
