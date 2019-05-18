@@ -14,7 +14,7 @@ logger = logging.getLogger()
 
 
 """ Simple wrapper for Recurly. """
-class Recurly(object):
+class Recurly():
 
   def __init__(self, subdomain, api_key, start_date=None, user_agent=None, quota_limit=100):
     self.headers = {'Accept': 'application/vnd.recurly.v2018-08-09'}
