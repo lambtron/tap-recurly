@@ -76,7 +76,7 @@ class Recurly(object):
         for item in data:
           yield item
       except requests.exceptions.HTTPError as err:
-        logger.info("Response returned http error code {code}".format(code=err.response.status_code))
+        logger.info("Response returned http error code %s: %s", err.response.status_code, err.response.json())
 
         if err.response.status_code == 401:
           logger.critical("Response returned http error code 401")
