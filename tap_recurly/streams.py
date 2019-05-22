@@ -133,6 +133,8 @@ class BillingInfo(Stream):
             res = get_child(parent["id"], self.replication_key)
             for item in res:
                 yield (self.stream, item)
+            # Writing state here in case the result is an error and there are no accounts
+            singer.write_state(state)
 
 
 class Adjustments(Stream):
