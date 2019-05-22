@@ -1,21 +1,17 @@
-
-# 
+#
 # Module dependencies.
-# 
+#
 
 import os
 import json
-import datetime
-import pytz
 import singer
 from singer import metadata
 from singer import utils
-from singer.metrics import Point
 from dateutil.parser import parse
 from tap_recurly.context import Context
 
 
-logger = singer.get_logger()
+LOGGER = singer.get_logger()
 KEY_PROPERTIES = ['id']
 
 
@@ -25,7 +21,7 @@ def get_abs_path(path):
 
 def needs_parse_to_date(string):
     if isinstance(string, str):
-        try: 
+        try:
             parse(string)
             return True
         except ValueError:
@@ -48,7 +44,8 @@ class Stream():
 
     def get_bookmark(self, state, name=None):
         name = self.name if not name else name
-        return (singer.get_bookmark(state, name, self.replication_key)) or Context.config["start_date"]
+        return (singer.get_bookmark(state, name, self.replication_key)
+                or Context.config["start_date"])
 
 
     def update_bookmark(self, state, value, name=None):
@@ -110,21 +107,21 @@ class Stream():
                 yield (self.stream, item)
 
         else:
-            raise Exception('Replication key not defined for {stream}'.format(self.name))
-        
+            raise Exception('Replication key not defined for {stream}'.format(stream=self.name))
+
 
 class Accounts(Stream):
     name = "accounts"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "id" ]
+    key_properties = ["id"]
 
 
 class BillingInfo(Stream):
     name = "billing_info"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "account_id" ]
+    key_properties = ["account_id"]
 
     # Needs its own sync function since it's bookmark is off Accounts.
     def sync(self, state):
@@ -144,7 +141,7 @@ class Adjustments(Stream):
     name = "adjustments"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "id" ]
+    key_properties = ["id"]
 
 
 class CouponRedemptions(Stream):
@@ -152,22 +149,22 @@ class CouponRedemptions(Stream):
     replication_method = "INCREMENTAL"
     # instead of `updated_at`, since parent objects do not update
     # when the coupon redemptions are updated.
-    replication_key = "created_at" 
-    key_properties = [ "id" ]
-    parent_streams = [ "accounts", "subscriptions", "invoices" ]
+    replication_key = "created_at"
+    key_properties = ["id"]
+    parent_streams = ["accounts", "subscriptions", "invoices"]
 
     # It has it's own sync since it uses multiple parent streams.
     def sync(self, state):
         for stream in self.parent_streams:
             name = "{stream}_{name}".format(stream=stream, name=self.name)
-            
+
             # Define get parent and child functions.
             get_parent = getattr(self.client, stream)
             get_child = getattr(self.client, name)
 
             # But use the specific `parent_child` bookmark.
             parents = get_parent(self.replication_key, self.get_bookmark(state, name))
-            
+
             for parent in parents:
                 # Use `self.replication` here because parent object is keyed on `created_at` instead
                 # of `parent.replication_key` which is `updated_at`
@@ -182,42 +179,42 @@ class Coupons(Stream):
     name = "coupons"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "id" ]
+    key_properties = ["id"]
 
 
 class Invoices(Stream):
     name = "invoices"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "id" ]
+    key_properties = ["id"]
 
 
 class Plans(Stream):
     name = "plans"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "id" ]
+    key_properties = ["id"]
 
 
 class PlansAddOns(Stream):
     name = "plans_add_ons"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "id" ]
+    key_properties = ["id"]
 
 
 class Subscriptions(Stream):
     name = "subscriptions"
     replication_method = "INCREMENTAL"
     replication_key = "updated_at"
-    key_properties = [ "id" ]
+    key_properties = ["id"]
 
 
 class Transactions(Stream):
     name = "transactions"
     replication_method = "INCREMENTAL"
     replication_key = "collected_at"
-    key_properties = [ "id" ]
+    key_properties = ["id"]
 
 
 
@@ -233,9 +230,3 @@ STREAMS = {
     "subscriptions": Subscriptions,
     "transactions": Transactions
 }
-
-
-
-
-
-

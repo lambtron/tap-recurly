@@ -15,7 +15,7 @@ from tap_recurly.streams import STREAMS
 from tap_recurly.context import Context
 
 
-logger = singer.get_logger()
+LOGGER = singer.get_logger()
 
 
 REQUIRED_CONFIG_KEYS = [
@@ -27,10 +27,10 @@ REQUIRED_CONFIG_KEYS = [
 
 
 def discover(client):
-    logger.info("Starting discover")
+    LOGGER.info("Starting discover")
     catalog = {"streams": discover_streams(client)}
     json.dump(catalog, sys.stdout, indent=2)
-    logger.info("Finished discover")
+    LOGGER.info("Finished discover")
 
 
 def stream_is_selected(mdata):
@@ -55,23 +55,23 @@ def sync(client, catalog, state):
         mdata = metadata.to_map(stream.metadata)
 
         if stream_name not in selected_stream_names:
-            logger.info("%s: Skipping - not selected", stream_name)
+            LOGGER.info("%s: Skipping - not selected", stream_name)
             continue
 
         key_properties = metadata.get(mdata, (), 'table-key-properties')
         singer.write_schema(stream_name, stream.schema.to_dict(), key_properties)
-        logger.info("%s: Starting sync", stream_name)
+        LOGGER.info("%s: Starting sync", stream_name)
         instance = STREAMS[stream_name](client)
         instance.stream = stream
         counter_value = sync_stream(state, instance)
         singer.write_state(state)
-        logger.info("%s: Completed sync (%s rows)", stream_name, counter_value)
+        LOGGER.info("%s: Completed sync (%s rows)", stream_name, counter_value)
 
     singer.write_state(state)
-    logger.info("Finished sync")
+    LOGGER.info("Finished sync")
 
 
-@singer.utils.handle_top_exception(logger)
+@singer.utils.handle_top_exception(LOGGER)
 def main():
     parsed_args = singer.utils.parse_args(REQUIRED_CONFIG_KEYS)
 
@@ -95,6 +95,3 @@ def main():
     elif parsed_args.catalog:
         state = parsed_args.state or {}
         sync(client, parsed_args.catalog, state)
-
-
-
