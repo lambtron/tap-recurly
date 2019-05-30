@@ -92,9 +92,9 @@ class Recurly():
         url = "sites/{site_id}/accounts"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
         url = url.format(site_id=self.site_id,
-                   limit=self.limit,
-                   column_name=column_name,
-                   bookmark=parse.quote(bookmark))
+                         limit=self.limit,
+                         column_name=column_name,
+                         bookmark=parse.quote(bookmark))
         return self._get_all(url)
 
     # substream of accounts
@@ -102,9 +102,9 @@ class Recurly():
         url = "sites/{site_id}/accounts/{account_id}/billing_info"
         url += "?limit={limit}&sort={column_name}&order=asc"
         url = url.format(site_id=self.site_id,
-                   account_id=account_id,
-                   limit=self.limit,
-                   column_name=column_name)
+                         account_id=account_id,
+                         limit=self.limit,
+                         column_name=column_name)
         for item in self._get_all(url):
             yield item
 
@@ -112,18 +112,18 @@ class Recurly():
         url = "sites/{site_id}/line_items"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
         url = url.format(site_id=self.site_id,
-                   limit=self.limit,
-                   column_name=column_name,
-                   bookmark=parse.quote(bookmark))
+                         limit=self.limit,
+                         column_name=column_name,
+                         bookmark=parse.quote(bookmark))
         return self._get_all(url)
 
     def accounts_coupon_redemptions(self, account_id, column_name):
         url = "sites/{site_id}/accounts/{account_id}/coupon_redemptions"
         url += "?limit={limit}&sort={column_name}&order=asc"
         url = url.format(site_id=self.site_id,
-                   account_id=account_id,
-                   limit=self.limit,
-                   column_name=column_name)
+                         account_id=account_id,
+                         limit=self.limit,
+                         column_name=column_name)
         for item in self._get_all(url):
             yield item
 
@@ -131,9 +131,9 @@ class Recurly():
         url = "sites/{site_id}/invoices/{invoice_id}/coupon_redemptions"
         url += "?limit={limit}&sort={column_name}&order=asc"
         url = url.format(site_id=self.site_id,
-                   invoice_id=invoice_id,
-                   limit=self.limit,
-                   column_name=column_name)
+                         invoice_id=invoice_id,
+                         limit=self.limit,
+                         column_name=column_name)
         for item in self._get_all(url):
             yield item
 
@@ -141,9 +141,9 @@ class Recurly():
         url = "sites/{site_id}/subscriptions/{subscription_id}/coupon_redemptions"
         url += "?limit={limit}&sort={column_name}&order=asc"
         url = url.format(site_id=self.site_id,
-                   subscription_id=subscription_id,
-                   limit=self.limit,
-                   column_name=column_name)
+                         subscription_id=subscription_id,
+                         limit=self.limit,
+                         column_name=column_name)
         for item in self._get_all(url):
             yield item
 
@@ -151,27 +151,27 @@ class Recurly():
         url = "sites/{site_id}/coupons"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
         url = url.format(site_id=self.site_id,
-                   limit=self.limit,
-                   column_name=column_name,
-                   bookmark=parse.quote(bookmark))
+                         limit=self.limit,
+                         column_name=column_name,
+                         bookmark=parse.quote(bookmark))
         return self._get_all(url)
 
     def invoices(self, column_name, bookmark):
         url = "sites/{site_id}/invoices"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
         url = url.format(site_id=self.site_id,
-                   limit=self.limit,
-                   column_name=column_name,
-                   bookmark=parse.quote(bookmark))
+                         limit=self.limit,
+                         column_name=column_name,
+                         bookmark=parse.quote(bookmark))
         return self._get_all(url)
 
     def plans(self, column_name, bookmark):
         url = "sites/{site_id}/plans"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
         url = url.format(site_id=self.site_id,
-                   limit=self.limit,
-                   column_name=column_name,
-                   bookmark=parse.quote(bookmark))
+                         limit=self.limit,
+                         column_name=column_name,
+                         bookmark=parse.quote(bookmark))
         return self._get_all(url)
 
     # substream of plans
@@ -181,9 +181,9 @@ class Recurly():
             url = "sites/{site_id}/plans/{plan_id}/add_ons"
             url += "?limit={limit}&sort={column_name}&order=asc"
             url = url.format(site_id=self.site_id,
-                       plan_id=plan["id"],
-                       limit=self.limit,
-                       column_name=column_name)
+                             plan_id=plan["id"],
+                             limit=self.limit,
+                             column_name=column_name)
             for item in self._get_all(url):
                 yield item
 
@@ -191,9 +191,9 @@ class Recurly():
         url = "sites/{site_id}/subscriptions"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
         url = url.format(site_id=self.site_id,
-                   limit=self.limit,
-                   column_name=column_name,
-                   bookmark=parse.quote(bookmark))
+                         limit=self.limit,
+                         column_name=column_name,
+                         bookmark=parse.quote(bookmark))
         return self._get_all(url)
 
     def transactions(self, column_name, bookmark):
@@ -201,7 +201,7 @@ class Recurly():
         url = "sites/{site_id}/transactions"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
         url = url.format(site_id=self.site_id,
-                   limit=self.limit,
-                   column_name=column_name,
-                   bookmark=parse.quote(bookmark))
+                         limit=self.limit,
+                         column_name=column_name,
+                         bookmark=parse.quote(bookmark))
         return self._get_all(url)
