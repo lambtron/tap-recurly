@@ -91,7 +91,7 @@ class Recurly():
     def accounts(self, column_name, bookmark):
         url = "sites/{site_id}/accounts"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    limit=self.limit,
                    column_name=column_name,
                    bookmark=parse.quote(bookmark))
@@ -101,7 +101,7 @@ class Recurly():
     def billing_info(self, account_id, column_name):
         url = "sites/{site_id}/accounts/{account_id}/billing_info"
         url += "?limit={limit}&sort={column_name}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    account_id=account_id,
                    limit=self.limit,
                    column_name=column_name)
@@ -111,7 +111,7 @@ class Recurly():
     def adjustments(self, column_name, bookmark):
         url = "sites/{site_id}/line_items"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    limit=self.limit,
                    column_name=column_name,
                    bookmark=parse.quote(bookmark))
@@ -120,7 +120,7 @@ class Recurly():
     def accounts_coupon_redemptions(self, account_id, column_name):
         url = "sites/{site_id}/accounts/{account_id}/coupon_redemptions"
         url += "?limit={limit}&sort={column_name}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    account_id=account_id,
                    limit=self.limit,
                    column_name=column_name)
@@ -130,7 +130,7 @@ class Recurly():
     def invoices_coupon_redemptions(self, invoice_id, column_name):
         url = "sites/{site_id}/invoices/{invoice_id}/coupon_redemptions"
         url += "?limit={limit}&sort={column_name}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    invoice_id=invoice_id,
                    limit=self.limit,
                    column_name=column_name)
@@ -140,7 +140,7 @@ class Recurly():
     def subscriptions_coupon_redemptions(self, subscription_id, column_name):
         url = "sites/{site_id}/subscriptions/{subscription_id}/coupon_redemptions"
         url += "?limit={limit}&sort={column_name}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    subscription_id=subscription_id,
                    limit=self.limit,
                    column_name=column_name)
@@ -150,7 +150,7 @@ class Recurly():
     def coupons(self, column_name, bookmark):
         url = "sites/{site_id}/coupons"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    limit=self.limit,
                    column_name=column_name,
                    bookmark=parse.quote(bookmark))
@@ -159,7 +159,7 @@ class Recurly():
     def invoices(self, column_name, bookmark):
         url = "sites/{site_id}/invoices"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    limit=self.limit,
                    column_name=column_name,
                    bookmark=parse.quote(bookmark))
@@ -168,7 +168,7 @@ class Recurly():
     def plans(self, column_name, bookmark):
         url = "sites/{site_id}/plans"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    limit=self.limit,
                    column_name=column_name,
                    bookmark=parse.quote(bookmark))
@@ -180,7 +180,7 @@ class Recurly():
         for plan in plans:
             url = "sites/{site_id}/plans/{plan_id}/add_ons"
             url += "?limit={limit}&sort={column_name}&order=asc"
-            url.format(site_id=self.site_id,
+            url = url.format(site_id=self.site_id,
                        plan_id=plan["id"],
                        limit=self.limit,
                        column_name=column_name)
@@ -190,7 +190,7 @@ class Recurly():
     def subscriptions(self, column_name, bookmark):
         url = "sites/{site_id}/subscriptions"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    limit=self.limit,
                    column_name=column_name,
                    bookmark=parse.quote(bookmark))
@@ -200,7 +200,7 @@ class Recurly():
         column_name = "updated_at"
         url = "sites/{site_id}/transactions"
         url += "?limit={limit}&sort={column_name}&begin_time={bookmark}&order=asc"
-        url.format(site_id=self.site_id,
+        url = url.format(site_id=self.site_id,
                    limit=self.limit,
                    column_name=column_name,
                    bookmark=parse.quote(bookmark))
