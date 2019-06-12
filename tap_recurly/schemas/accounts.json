@@ -482,13 +482,13 @@
             "exp_month": {
               "type": [
                 "null",
-                "number"
+                "integer"
               ]
             },
             "exp_year": {
               "type": [
                 "null",
-                "number"
+                "integer"
               ]
             }
           }
@@ -502,7 +502,7 @@
             "score": {
               "type": [
                 "null",
-                "number"
+                "integer"
               ]
             },
             "decision": {
