@@ -195,7 +195,8 @@
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "status": {
       "type": [
@@ -316,13 +317,13 @@
         "exp_month": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "exp_year": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         }
       }
@@ -435,13 +436,15 @@
           "type": [
             "null",
             "number"
-          ]
+          ],
+          "multipleOf": 1e-08
         },
         "amount_refunded": {
           "type": [
             "null",
             "number"
-          ]
+          ],
+          "multipleOf": 1e-08
         },
         "card_fingerprint": {
           "type": [

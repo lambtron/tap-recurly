@@ -37,19 +37,19 @@
     "max_redemptions": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "max_redemptions_per_account": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "unique_coupon_codes_count": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "duration": {
@@ -61,7 +61,7 @@
     "temporal_amount": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "temporal_unit": {
@@ -79,7 +79,7 @@
     "free_trial_amount": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "applies_to_all_plans": {
@@ -161,7 +161,7 @@
         "percent": {
           "type": [
             "null",
-            "number"
+            "integer"
           ]
         },
         "currencies": {
@@ -185,7 +185,8 @@
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               }
             }
           }
@@ -205,7 +206,7 @@
             "length": {
               "type": [
                 "null",
-                "number"
+                "integer"
               ]
             }
           }
