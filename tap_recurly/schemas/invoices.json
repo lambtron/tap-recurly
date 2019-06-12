@@ -217,43 +217,50 @@
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "subtotal": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "tax": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "total": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "refundable_amount": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "paid": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "balance": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "tax_info": {
       "type": [
@@ -277,7 +284,8 @@
           "type": [
             "null",
             "number"
-          ]
+          ],
+          "multipleOf": 1e-08
         }
       }
     },
@@ -644,7 +652,8 @@
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "description": {
                 "type": [
@@ -655,32 +664,36 @@
               "quantity": {
                 "type": [
                   "null",
-                  "number"
+                  "integer"
                 ]
               },
               "unit_amount": {
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "subtotal": {
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "discount": {
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "tax": {
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "taxable": {
                 "type": [
@@ -722,7 +735,8 @@
                     "type": [
                       "null",
                       "number"
-                    ]
+                    ],
+                    "multipleOf": 1e-08
                   }
                 }
               },
@@ -730,7 +744,8 @@
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "refund": {
                 "type": [
@@ -741,14 +756,15 @@
               "refunded_quantity": {
                 "type": [
                   "null",
-                  "number"
+                  "integer"
                 ]
               },
               "credit_applied": {
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "start_date": {
                 "type": [
@@ -985,7 +1001,8 @@
             "type": [
               "null",
               "number"
-            ]
+            ],
+            "multipleOf": 1e-08
           },
           "status": {
             "type": [
@@ -1106,13 +1123,13 @@
               "exp_month": {
                 "type": [
                   "null",
-                  "number"
+                  "integer"
                 ]
               },
               "exp_year": {
                 "type": [
                   "null",
-                  "number"
+                  "integer"
                 ]
               }
             }
@@ -1429,7 +1446,8 @@
             "type": [
               "null",
               "number"
-            ]
+            ],
+            "multipleOf": 1e-08
           },
           "original_credit_payment_id": {
             "type": [
@@ -1622,7 +1640,8 @@
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "status": {
                 "type": [
@@ -1743,13 +1762,13 @@
                   "exp_month": {
                     "type": [
                       "null",
-                      "number"
+                      "integer"
                     ]
                   },
                   "exp_year": {
                     "type": [
                       "null",
-                      "number"
+                      "integer"
                     ]
                   }
                 }

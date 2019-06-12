@@ -44,18 +44,20 @@
       "type": [
         "null",
         "number"
-      ]
+      ],
+     "multipleOf": 1e-08
     },
     "proration_rate": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "refunded_quantity": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "account": {
@@ -207,8 +209,9 @@
     "amount": {
       "type": [
         "null",
-        "integer"
-      ]
+        "number"
+      ],
+      "multipleOf": 1e-08
     },
     "description": {
       "type": [
@@ -226,25 +229,29 @@
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "subtotal": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "discount": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "tax": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "taxable": {
       "type": [

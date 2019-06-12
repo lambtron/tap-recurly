@@ -308,7 +308,7 @@
                   "percent": {
                     "type": [
                       "null",
-                      "number"
+                      "integer"
                     ]
                   },
                   "currencies": {
@@ -332,7 +332,8 @@
                           "type": [
                             "null",
                             "number"
-                          ]
+                          ],
+                          "multipleOf": 1e-08
                         }
                       }
                     }
@@ -529,7 +530,8 @@
                 "type": [
                   "null",
                   "number"
-                ]
+                ],
+                "multipleOf": 1e-08
               },
               "created_at": {
                 "type": [
@@ -559,7 +561,8 @@
           "type": [
             "null",
             "number"
-          ]
+          ],
+          "multipleOf": 1e-08
         },
         "quantity": {
           "type": [
@@ -648,19 +651,19 @@
     "remaining_billing_cycles": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "total_billing_cycles": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "renewal_billing_cycles": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "auto_renew": {
@@ -679,7 +682,7 @@
     "remaining_pause_cycles": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "currency": {
@@ -692,12 +695,13 @@
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "quantity": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "add_ons": {
@@ -777,7 +781,8 @@
             "type": [
               "null",
               "number"
-            ]
+            ],
+            "multipleOf": 1e-08
           },
           "created_at": {
             "type": [
@@ -807,13 +812,15 @@
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "subtotal": {
       "type": [
         "null",
         "number"
-      ]
+      ],
+      "multipleOf": 1e-08
     },
     "collection_method": {
       "type": [
@@ -830,7 +837,7 @@
     "net_terms": {
       "type": [
         "null",
-        "number"
+        "integer"
       ]
     },
     "terms_and_conditions": {
